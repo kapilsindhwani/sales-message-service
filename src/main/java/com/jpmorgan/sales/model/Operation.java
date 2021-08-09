@@ -2,6 +2,9 @@ package com.jpmorgan.sales.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Operation to ADD, SUBTRACT or MULTIPLY numbers
+ */
 public enum Operation {
     ADD {
         @Override

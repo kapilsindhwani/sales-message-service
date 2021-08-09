@@ -10,6 +10,9 @@ import com.jpmorgan.sales.store.SalesMessageStore;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * SalesMessageReceiver receives all the sales coming into the system and process those messages.
+ */
 public class SalesMessageReceiver {
 
     private final SalesMessageStore salesMessageStore;
@@ -24,14 +27,30 @@ public class SalesMessageReceiver {
         this.maximumMessage = maximumMessage;
     }
 
+    /**
+     * Receive product with type and value
+     * @param type e.g. apple
+     * @param value e.g. 0.06
+     */
     public void receiveProduct(String type, BigDecimal value) {
         receiveProduct(type, value, 1);
     }
 
+    /**
+     * Receive product with type, value and quantity
+     * @param type e.g. apple
+     * @param value e.g. 0.06
+     * @param quantity e.g 10
+     */
     public void receiveProduct(String type, BigDecimal value, Integer quantity) {
         receiveMessage(() -> salesMessageStore.saveProduct(type, value, quantity));
     }
 
+    /**
+     * @param type e.g. apple
+     * @param value e.g. 0.06
+     * @param operation e.g ADD
+     */
     public void receiveAdjustment(String type, BigDecimal value, Operation operation) {
         receiveMessage(() -> {
             ProductAdjustment productAdjustment = salesMessageStore.saveAdjustments(type, value, operation);
@@ -55,7 +74,6 @@ public class SalesMessageReceiver {
 
     /**
      * Check if number of messages has reached the report threshold.
-     *
      * @return Return true if report frequency is less than one, in this case a report should be taken after each message.
      *         Else return true each time when number of messages hits the frequency.
      */
@@ -65,7 +83,6 @@ public class SalesMessageReceiver {
 
     /**
      * Check if number of messages has reached the maximum number.
-     *
      * @return Return false if maximum message is less than one, in this case any number of messages can be received.
      *         Else return true once number of messages reaches the upper limit.
      */
@@ -76,10 +93,5 @@ public class SalesMessageReceiver {
     public SalesMessageStore getStorage() {
         return salesMessageStore;
     }
-
-    public SalesMessageReport getReporter() {
-        return salesMessageReporter;
-    }
-
 
 }

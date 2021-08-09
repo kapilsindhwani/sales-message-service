@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Stores the messages in memory
+ */
 public class SalesMessageMemoryStore implements SalesMessageStore {
 
     private List<Product> products = new ArrayList<>();

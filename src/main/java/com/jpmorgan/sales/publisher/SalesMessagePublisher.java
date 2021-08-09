@@ -22,6 +22,10 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.IntStream;
 
+/**
+ * SalesMessagePublisher acts as a third party sender sending sales into the system.
+ * This class reads messages from a file 'message.xml' and publishes the message for the receiver to consume.
+ */
 public class SalesMessagePublisher {
 
     private final SalesMessageStore storage = new SalesMessageMemoryStore();

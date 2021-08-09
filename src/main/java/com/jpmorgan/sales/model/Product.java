@@ -3,6 +3,9 @@ package com.jpmorgan.sales.model;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Immutable Product class
+ */
 public class Product {
     private final String type;
     private final BigDecimal value;

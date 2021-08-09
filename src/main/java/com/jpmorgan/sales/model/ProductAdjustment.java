@@ -2,6 +2,9 @@ package com.jpmorgan.sales.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Immutable Product Adjustment
+ */
 public class ProductAdjustment {
 
     private final String type;

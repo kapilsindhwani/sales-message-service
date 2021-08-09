@@ -3,6 +3,9 @@ package com.jpmorgan.sales.report;
 import com.jpmorgan.sales.service.ProductService;
 import com.jpmorgan.sales.store.SalesMessageStore;
 
+/**
+ * Prints the report to console
+ */
 public class SalesMessageConsoleReport implements SalesMessageReport {
 
     private final SalesMessageStore storage;
