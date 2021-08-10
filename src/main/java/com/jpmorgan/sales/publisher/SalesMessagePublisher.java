@@ -38,26 +38,26 @@ public class SalesMessagePublisher {
 
     public void start() {
         // Instantiate the Factory
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        var documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             // optional, but recommended
             // process XML securely, avoid attacks like XML External Entities (XXE)
             documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             // parse XML file
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document doc = documentBuilder.parse(new File(getClass().getClassLoader().getResource(FILENAME).getFile()));
+            var documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            var doc = documentBuilder.parse(new File(getClass().getClassLoader().getResource(FILENAME).getFile()));
             doc.getDocumentElement().normalize();
 
-            NodeList list = doc.getElementsByTagName("message");
+            var list = doc.getElementsByTagName("message");
             IntStream.range(0,list.getLength()).forEach(count -> {
                 if (!receiver.hasReachedMaximumNumberOfMessages()) {
                     Node node = list.item(count);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
-                        String type = element.getAttribute("productType");
-                        BigDecimal price = new BigDecimal(element.getAttribute("price"));
-                        Optional<Node> quantityNode = Optional.ofNullable(element.getElementsByTagName("qty").item(0));
-                        Optional<Node> adjustmentNode = Optional.ofNullable(element.getElementsByTagName("command").item(0));
+                        var type = element.getAttribute("productType");
+                        var price = new BigDecimal(element.getAttribute("price"));
+                        var quantityNode = Optional.ofNullable(element.getElementsByTagName("qty").item(0));
+                        var adjustmentNode = Optional.ofNullable(element.getElementsByTagName("command").item(0));
                         quantityNode.ifPresent(quantity -> receiver.receiveProduct(type, price, Integer.valueOf(quantity.getTextContent())));
                         adjustmentNode.ifPresent(adjustment -> receiver.receiveAdjustment(type, price, Operation.valueOf(adjustment.getTextContent())));
                         if (quantityNode.isEmpty() && adjustmentNode.isEmpty()) {

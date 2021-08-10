@@ -52,7 +52,3 @@ mvn clean test
 1. Import the project into intellij
 2. Run the application from `Application.java` in intellij.
 3. The application will load messages from `messages.xml` in resources and publish it into the system.
-
-## Command line interface
-Console application start: ```java -jar <artifact-path>```
-

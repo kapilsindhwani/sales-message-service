@@ -18,9 +18,9 @@ public class SalesMessageMemoryStore implements SalesMessageStore {
 
     @Override
     public Product saveProduct(String type, BigDecimal value, Integer quantity) {
-        Product p = new Product(type, value, quantity);
-        products.add(p);
-        return p;
+        var product = new Product(type, value, quantity);
+        products.add(product);
+        return product;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SalesMessageMemoryStore implements SalesMessageStore {
 
     @Override
     public ProductAdjustment saveAdjustments(String type, BigDecimal value, Operation operation) {
-        ProductAdjustment productAdjustment = new ProductAdjustment(type, value, operation);
+        var productAdjustment = new ProductAdjustment(type, value, operation);
         adjustments.add(productAdjustment);
         return productAdjustment;
     }

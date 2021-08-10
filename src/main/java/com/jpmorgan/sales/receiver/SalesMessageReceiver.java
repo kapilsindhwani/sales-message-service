@@ -53,8 +53,8 @@ public class SalesMessageReceiver {
      */
     public void receiveAdjustment(String type, BigDecimal value, Operation operation) {
         receiveMessage(() -> {
-            ProductAdjustment productAdjustment = salesMessageStore.saveAdjustments(type, value, operation);
-            List<Product> adjustedProducts = ProductService.adjustProducts(productAdjustment, salesMessageStore.getProducts());
+            var productAdjustment = salesMessageStore.saveAdjustments(type, value, operation);
+            var adjustedProducts = ProductService.adjustProducts(productAdjustment, salesMessageStore.getProducts());
             salesMessageStore.setProducts(adjustedProducts);
         });
     }
