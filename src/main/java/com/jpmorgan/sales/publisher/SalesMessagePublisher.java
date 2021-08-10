@@ -65,8 +65,7 @@ public class SalesMessagePublisher {
                         }
                     }
                 } else {
-                    System.out.println("No more messages allowed as maximum threshold is reached.");
-                    System.exit(1);
+                    throw new IllegalStateException("No more messages allowed as maximum threshold is reached.");
                 }
             }
             );
@@ -74,7 +73,10 @@ public class SalesMessagePublisher {
         } catch (ParserConfigurationException | SAXException | IOException exception) {
             logger.severe("Unable to parse the file due to "+ exception.getMessage());
             throw new PublishFailedException(exception.getMessage());
-        } catch (Exception exception) {
+        } catch (IllegalStateException exception) {
+            logger.info(exception.getMessage());
+        }
+        catch (Exception exception) {
             logger.severe(exception.getMessage());
             throw new PublishFailedException(exception.getMessage());
         }
