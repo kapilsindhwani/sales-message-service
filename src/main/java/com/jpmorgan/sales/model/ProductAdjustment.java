@@ -25,12 +25,8 @@ public class ProductAdjustment {
         return new Product(product.getType(), operation.calculate(product.getValue(), value) , product.getQuantity());
     }
 
-    @Override
-    public String toString() {
-        return "ProductAdjustment{" +
-                "type='" + type + '\'' +
-                ", value=" + value +
-                ", operation=" + operation +
-                '}';
+    public String toString () {
+        return "Applied "+operation+" to "+ type +" and price changed to "+value;
     }
+
 }

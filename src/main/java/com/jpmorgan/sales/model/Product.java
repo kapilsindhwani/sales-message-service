@@ -46,11 +46,8 @@ public class Product {
     }
 
     @Override
-    public String toString() {
-        return "Product{" +
-                "type='" + type + '\'' +
-                ", value=" + value +
-                ", quantity=" + quantity +
-                '}';
+    public String toString () {
+        return "|"+String.format("%1$19s", type)+"|"+String.format("%1$12s",value.toString())+"|"+String.format("%1$10s",quantity.toString())+"|";
     }
+
 }

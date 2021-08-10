@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 /**
@@ -31,20 +32,19 @@ public class SalesMessagePublisher {
     private final SalesMessageStore storage = new SalesMessageMemoryStore();
     private final SalesMessageReport reporter = new SalesMessageConsoleReport(storage);
     private final SalesMessageReceiver receiver = new SalesMessageReceiver(storage, reporter, 10, 50);
-
+    private final Logger logger = Logger.getLogger(SalesMessagePublisher.class.getName());
     private static final String FILENAME = "message.xml";
 
     public void start() {
-
         // Instantiate the Factory
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             // optional, but recommended
             // process XML securely, avoid attacks like XML External Entities (XXE)
-            dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             // parse XML file
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            Document doc = db.parse(new File(getClass().getClassLoader().getResource(FILENAME).getFile()));
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document doc = documentBuilder.parse(new File(getClass().getClassLoader().getResource(FILENAME).getFile()));
             doc.getDocumentElement().normalize();
 
             NodeList list = doc.getElementsByTagName("message");
@@ -64,13 +64,16 @@ public class SalesMessagePublisher {
                         }
                     }
                 } else {
-                    System.out.println("No more messages allowed");
+                    System.out.println("No more messages allowed as maximum threshold is reached.");
                     System.exit(1);
                 }
             }
             );
 
-        } catch (ParserConfigurationException | SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException exception) {
+            logger.severe("Unable to parse the file due to "+ exception.getMessage());
+        } catch (Exception exception) {
+            logger.severe(exception.getMessage());
         }
 
     }

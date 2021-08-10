@@ -13,9 +13,6 @@
     </message>
     <message productType="cherry" price="5.00">
     </message>
-    <message productType="apple" price="15.45">
-        <command>SUBTRACT</command>
-    </message>
     <message productType="cherry" price="1.2">
         <command>MULTIPLY</command>
     </message>

@@ -16,7 +16,10 @@ public class SalesMessageConsoleReport implements SalesMessageReport {
 
     @Override
     public void reportProducts() {
-        System.out.println("\nProduct sales report:");
+        System.out.println("After each 10 sales report");
+        System.out.println(" ------------------------------------------- ");
+        System.out.println("|            product|       value|  quantity|");
+        System.out.println("|-------------------|------------|----------|");
         ProductService.sumProducts(storage.getProducts())
                 .forEach(System.out::println);
         System.out.println();
@@ -24,7 +27,7 @@ public class SalesMessageConsoleReport implements SalesMessageReport {
 
     @Override
     public void reportAppliedAdjustments() {
-        System.out.println("\nProduct adjustments:");
+        System.out.println("50 processed messsages limit reached. Adjustments made so far:");
         storage.getAdjustments()
                 .forEach(System.out::println);
         System.out.println();
