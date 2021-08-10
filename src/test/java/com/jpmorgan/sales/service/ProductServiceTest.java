@@ -15,7 +15,7 @@ public class ProductServiceTest {
 
     @Test
     public void testSumOnUniqueProduct() {
-        List<Product> sum = ProductService.sumProducts(Arrays.asList(
+        var sum = ProductService.sumProducts(Arrays.asList(
                 new Product("apple", new BigDecimal(10), 1),
                 new Product("banana", new BigDecimal(20), 2),
                 new Product("cherry", new BigDecimal(30), 3)
@@ -30,7 +30,7 @@ public class ProductServiceTest {
 
     @Test
     public void testSumOnMultipleProducts() {
-        List<Product> sum = ProductService.sumProducts(Arrays.asList(
+        var sum = ProductService.sumProducts(Arrays.asList(
                 new Product("apple", new BigDecimal(10), 1),
                 new Product("banana", new BigDecimal(20), 2),
                 new Product("cherry", new BigDecimal(30), 3),
@@ -49,7 +49,7 @@ public class ProductServiceTest {
 
     @Test
     public void testAdjustOnUniqueProduct() {
-        List<Product> adj = ProductService.adjustProducts(
+        var adjustProducts = ProductService.adjustProducts(
                 new ProductAdjustment("apple", new BigDecimal(5), Operation.MULTIPLY),
                 Arrays.asList(
                         new Product("apple", new BigDecimal(10), 1),
@@ -58,7 +58,7 @@ public class ProductServiceTest {
                 )
         );
 
-        assertThat(adj).hasSize(3).containsExactly(
+        assertThat(adjustProducts).hasSize(3).containsExactly(
                 new Product("apple", new BigDecimal(50), 1),
                 new Product("banana", new BigDecimal(20), 2),
                 new Product("cherry", new BigDecimal(30), 3)
@@ -67,7 +67,7 @@ public class ProductServiceTest {
 
     @Test
     public void testAdjustOnMultipleProducts() {
-        List<Product> adj = ProductService.adjustProducts(
+        var adjustProducts = ProductService.adjustProducts(
                 new ProductAdjustment("apple", new BigDecimal(5), Operation.MULTIPLY),
                 Arrays.asList(
                         new Product("apple", new BigDecimal(10), 1),
@@ -79,7 +79,7 @@ public class ProductServiceTest {
                 )
         );
 
-        assertThat(adj).hasSize(6).containsExactly(
+        assertThat(adjustProducts).hasSize(6).containsExactly(
                 new Product("apple", new BigDecimal(50), 1),
                 new Product("banana", new BigDecimal(20), 2),
                 new Product("cherry", new BigDecimal(30), 3),
@@ -91,7 +91,7 @@ public class ProductServiceTest {
 
     @Test
     public void testMultipleAdjustOnMultipleProducts() {
-        List<Product> products = Arrays.asList(
+        var products = Arrays.asList(
                 new Product("apple", new BigDecimal(10), 1),
                 new Product("banana", new BigDecimal(20), 2),
                 new Product("cherry", new BigDecimal(30), 3),
@@ -100,11 +100,11 @@ public class ProductServiceTest {
                 new Product("cherry", new BigDecimal(3), 3)
         );
 
-        List<Product> adj = ProductService.adjustProducts(new ProductAdjustment("apple", new BigDecimal(5), Operation.ADD), products);
-        List<Product> adj2 = ProductService.adjustProducts(new ProductAdjustment("banana", new BigDecimal(5), Operation.SUBTRACT), adj);
-        List<Product> adj3 = ProductService.adjustProducts(new ProductAdjustment("cherry", new BigDecimal(5), Operation.MULTIPLY), adj2);
+        var adjustedApple = ProductService.adjustProducts(new ProductAdjustment("apple", new BigDecimal(5), Operation.ADD), products);
+        var adjustedBanana = ProductService.adjustProducts(new ProductAdjustment("banana", new BigDecimal(5), Operation.SUBTRACT), adjustedApple);
+        var adjustedCherry = ProductService.adjustProducts(new ProductAdjustment("cherry", new BigDecimal(5), Operation.MULTIPLY), adjustedBanana);
 
-        assertThat(adj3).hasSize(6).containsExactly(
+        assertThat(adjustedCherry).hasSize(6).containsExactly(
                 new Product("apple", new BigDecimal(15), 1),
                 new Product("banana", new BigDecimal(15), 2),
                 new Product("cherry", new BigDecimal(150), 3),

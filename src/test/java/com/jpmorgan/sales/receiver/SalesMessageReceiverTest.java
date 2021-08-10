@@ -15,7 +15,7 @@ public class SalesMessageReceiverTest {
 
     @Test
     public void whenMessageIsReceivedThenProductIsPersisted() {
-        SalesMessageReceiver salesMessageReceiver = getMessageReceiver(5, 5);
+        var salesMessageReceiver = getMessageReceiver(5, 5);
         salesMessageReceiver.receiveProduct("A", BigDecimal.ONE);
         assertThat(salesMessageReceiver.getStorage().getNumberOfMessages()).isEqualTo(1);
     }
@@ -28,9 +28,9 @@ public class SalesMessageReceiverTest {
     @Test(expected = IllegalStateException.class)
     public void whenMaxMessageIsReceivedThenThrowException() {
         int max = 1;
-        SalesMessageMemoryStore storage = new SalesMessageMemoryStore();
-        MockSalesMessageReporter report = new MockSalesMessageReporter();
-        SalesMessageReceiver receiver = new SalesMessageReceiver(storage, report, 10, max);
+        var storage = new SalesMessageMemoryStore();
+        var report = new MockSalesMessageReporter();
+        var receiver = new SalesMessageReceiver(storage, report, 10, max);
 
         receiver.receiveProduct("A", BigDecimal.ONE);
         try {
@@ -50,23 +50,23 @@ public class SalesMessageReceiverTest {
 
     @Test
     public void whenMaximumMessageIsNotReceivedThenMessageIsPersisted() {
-        SalesMessageReceiver receiver = getMessageReceiver(0, 0);
+        var receiver = getMessageReceiver(0, 0);
         IntStream.range(0, 5).forEach(count -> receiver.receiveProduct("A", BigDecimal.ONE));
         assertThat(receiver.getStorage().getNumberOfMessages()).isEqualTo(5);
     }
 
     @Test
     public void whenProductAdjustmentMessageIsReceivedThenPriceIsAdjusted() {
-        SalesMessageReceiver r = getMessageReceiver(0, 0);
+        var receiver = getMessageReceiver(0, 0);
 
-        r.receiveProduct("A", BigDecimal.TEN);
-        r.receiveProduct("A", BigDecimal.ONE, 2);
-        r.receiveProduct("B", BigDecimal.TEN);
-        r.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
-        r.receiveProduct("A", BigDecimal.TEN);
-        r.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
+        receiver.receiveProduct("A", BigDecimal.TEN);
+        receiver.receiveProduct("A", BigDecimal.ONE, 2);
+        receiver.receiveProduct("B", BigDecimal.TEN);
+        receiver.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
+        receiver.receiveProduct("A", BigDecimal.TEN);
+        receiver.receiveAdjustment("A", BigDecimal.ONE, Operation.ADD);
 
-        assertThat(r.getStorage().getProducts()).containsExactly(
+        assertThat(receiver.getStorage().getProducts()).containsExactly(
            new Product("A", new BigDecimal(12), 1),
            new Product("A", new BigDecimal(3), 2),
            new Product("B", new BigDecimal(10), 1),
@@ -90,9 +90,9 @@ public class SalesMessageReceiverTest {
     }
 
     private void testReportProducts(Integer messages, Integer reportFreq, Integer expectedReportCount) {
-        SalesMessageMemoryStore storage = new SalesMessageMemoryStore();
-        MockSalesMessageReporter report = new MockSalesMessageReporter();
-        SalesMessageReceiver receiver = new SalesMessageReceiver(storage, report, reportFreq, 50);
+        var storage = new SalesMessageMemoryStore();
+        var report = new MockSalesMessageReporter();
+        var receiver = new SalesMessageReceiver(storage, report, reportFreq, 50);
 
         IntStream.range(0, messages).forEach(count -> receiver.receiveProduct("A", BigDecimal.ONE));
 
@@ -102,9 +102,9 @@ public class SalesMessageReceiverTest {
 
     @Test
     public void testAdjustmentReportWhenReachedTheMaximum() {
-        SalesMessageMemoryStore storage = new SalesMessageMemoryStore();
-        MockSalesMessageReporter report = new MockSalesMessageReporter();
-        SalesMessageReceiver receiver = new SalesMessageReceiver(storage, report, 1, 1);
+        var storage = new SalesMessageMemoryStore();
+        var report = new MockSalesMessageReporter();
+        var receiver = new SalesMessageReceiver(storage, report, 1, 1);
 
         receiver.receiveProduct("A", BigDecimal.ONE);
         assertThat(report.getNumberOfAdjustmentReports()).isEqualTo(1);
@@ -115,9 +115,9 @@ public class SalesMessageReceiverTest {
     @Test
     public void testMaximumMessage() {
         int max = 3;
-        SalesMessageMemoryStore storage = new SalesMessageMemoryStore();
-        MockSalesMessageReporter report = new MockSalesMessageReporter();
-        SalesMessageReceiver receiver = new SalesMessageReceiver(storage, report, 10, max);
+        var storage = new SalesMessageMemoryStore();
+        var report = new MockSalesMessageReporter();
+        var receiver = new SalesMessageReceiver(storage, report, 10, max);
 
         receiver.receiveProduct("A", BigDecimal.ONE);
         receiver.receiveProduct("A", BigDecimal.ONE, 1);
@@ -130,9 +130,9 @@ public class SalesMessageReceiverTest {
         assertThat(receiver.hasReachedMaximumNumberOfMessages()).isTrue();
     }
 
-    private SalesMessageReceiver getMessageReceiver(Integer reportFreq, Integer maxMsg) {
-        SalesMessageMemoryStore storage = new SalesMessageMemoryStore();
-        MockSalesMessageReporter report = new MockSalesMessageReporter();
-        return new SalesMessageReceiver(storage, report, reportFreq, maxMsg);
+    private SalesMessageReceiver getMessageReceiver(Integer reportFrequency, Integer maxMsg) {
+        var storage = new SalesMessageMemoryStore();
+        var report = new MockSalesMessageReporter();
+        return new SalesMessageReceiver(storage, report, reportFrequency, maxMsg);
     }
 }
