@@ -1,8 +1,8 @@
-package com.jpmorgan.sales.report;
+package com.jpmorgan.sales.receiver;
 
 import com.jpmorgan.sales.model.Product;
 import com.jpmorgan.sales.model.Operation;
-import com.jpmorgan.sales.receiver.SalesMessageReceiver;
+import com.jpmorgan.sales.report.MockSalesMessageReporter;
 import com.jpmorgan.sales.store.SalesMessageMemoryStore;
 import org.junit.Test;
 import java.math.BigDecimal;

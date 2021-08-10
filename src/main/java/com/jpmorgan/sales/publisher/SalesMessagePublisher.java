@@ -1,5 +1,6 @@
 package com.jpmorgan.sales.publisher;
 
+import com.jpmorgan.sales.exception.PublishFailedException;
 import com.jpmorgan.sales.model.Operation;
 import com.jpmorgan.sales.receiver.SalesMessageReceiver;
 import com.jpmorgan.sales.report.SalesMessageConsoleReport;
@@ -72,8 +73,10 @@ public class SalesMessagePublisher {
 
         } catch (ParserConfigurationException | SAXException | IOException exception) {
             logger.severe("Unable to parse the file due to "+ exception.getMessage());
+            throw new PublishFailedException(exception.getMessage());
         } catch (Exception exception) {
             logger.severe(exception.getMessage());
+            throw new PublishFailedException(exception.getMessage());
         }
 
     }
